@@ -1,13 +1,19 @@
 import React from "react";
-import Layout from "./app/pages/Layout";
-import Test from "./app/pages/Test";
+import LoginForm from "./app/pages/user/LoginForm";
+import Layout from "./app/test-pages/Layout";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
-    <div>
-      <Layout />
-      <Test />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginForm />}></Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Layout />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
