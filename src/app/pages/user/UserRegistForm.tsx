@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import accountRouter, {
-  LoginRequest,
-  TokenResponse,
+  UserRegisterRequest,
+  UserResponse,
 } from "../../../api/AccountRouter";
 import { setStorage } from "../../../utils/useLocalStroage";
 import { Api } from "../../../api/http-commons";
@@ -23,17 +23,16 @@ const Main = styled.div`
   height: 300px;
 `;
 
-export default function LoginForm() {
+export default function UserRegistForm() {
   const navigate = useNavigate();
 
-  const onFinish = async (values: LoginRequest) => {
+  const onFinish = async (values: UserRegisterRequest) => {
     if (values.email && values.password) {
-      const res = await accountRouter.signIn(values);
+      const res = await accountRouter.signUp(values);
       if (res) {
-        const api: Api<TokenResponse> = res.data;
-        const tokens = api.body;
-        setStorage("token", JSON.stringify(tokens));
-        navigate("/");
+        const api: Api<UserResponse> = res.data;
+        const user = api.body;
+        console.log(user);
       }
     }
   };
@@ -50,7 +49,7 @@ export default function LoginForm() {
           initialValues={{ remember: true }}
           autoComplete="off"
         >
-          <Form.Item<LoginRequest>
+          <Form.Item<UserRegisterRequest>
             label="email"
             name="email"
             rules={[{ required: true, message: "Please input your email!" }]}
@@ -58,12 +57,27 @@ export default function LoginForm() {
             <Input />
           </Form.Item>
 
-          <Form.Item<LoginRequest>
+          <Form.Item<UserRegisterRequest>
             label="Password"
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
             <Input.Password />
+          </Form.Item>
+
+          <Form.Item<UserRegisterRequest>
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: "Please input your name!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item<UserRegisterRequest>
+            label="Address"
+            name="address"
+            rules={[{ required: true, message: "Please input your address!" }]}
+          >
+            <Input />
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
